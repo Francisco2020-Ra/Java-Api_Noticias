@@ -12,5 +12,5 @@ public class AuthorDTO {
     private String firstName;
     private String lastName;
     private String fullname = this.firstName + " " + this.lastName;
-    private LocalDate createdAt;
+    private String createdAt;
 }

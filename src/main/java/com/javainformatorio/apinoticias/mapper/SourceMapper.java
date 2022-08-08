@@ -19,7 +19,7 @@ public class SourceMapper {
                 .id(sourceEntity.getId())
                 .name(sourceEntity.getName())
                 .code(sourceEntity.getCode())
-                .createdAt(sourceEntity.getCreatedAt())
+                .createdAt(sourceEntity.getCreatedAt().toString())
                 .build();
     }
 

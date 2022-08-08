@@ -12,5 +12,5 @@ public class SourceDTO {
     private Long id;
     private String name;
     private String code;
-    private LocalDate createdAt;
+    private String createdAt;
 }

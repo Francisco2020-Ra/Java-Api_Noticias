@@ -8,6 +8,8 @@ import com.javainformatorio.apinoticias.service.SourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SourceServiceImpl implements SourceService {
     @Autowired
@@ -22,5 +24,13 @@ public class SourceServiceImpl implements SourceService {
         SourceDTO sourceDTO1 = sourceMapper.toDTO(sourceSave);
 
         return sourceDTO1;
+    }
+
+    @Override
+    public List<SourceDTO> getSource() {
+        List<SourceEntity> sourceEntities = sourceRepository.findAll();
+        List<SourceDTO> sourceDTOS = sourceMapper.toListDTO(sourceEntities);
+
+        return sourceDTOS;
     }
 }

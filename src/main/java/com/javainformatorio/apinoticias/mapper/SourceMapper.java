@@ -4,6 +4,9 @@ import com.javainformatorio.apinoticias.dto.SourceDTO;
 import com.javainformatorio.apinoticias.entities.SourceEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import static java.util.stream.Collectors.toList;
+
 @Component
 public class SourceMapper {
 
@@ -21,6 +24,13 @@ public class SourceMapper {
                 .code(sourceEntity.getCode())
                 .createdAt(sourceEntity.getCreatedAt().toString())
                 .build();
+    }
+
+    public List<SourceDTO> toListDTO(List<SourceEntity> sourceEntities){
+        return sourceEntities
+                .stream()
+                .map(this::toDTO)
+                .collect(toList());
     }
 
 }

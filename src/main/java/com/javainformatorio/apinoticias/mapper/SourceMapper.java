@@ -33,4 +33,11 @@ public class SourceMapper {
                 .collect(toList());
     }
 
+    public SourceEntity toSetEntity(SourceEntity sourceEntity, SourceDTO sourceDTO){
+        sourceEntity.setId(sourceDTO.getId());
+        sourceEntity.setName(sourceDTO.getName());
+        sourceEntity.setCode(sourceDTO.getCode());
+        return sourceEntity;
+    }
+
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SourceServiceImpl implements SourceService {
@@ -32,5 +33,21 @@ public class SourceServiceImpl implements SourceService {
         List<SourceDTO> sourceDTOS = sourceMapper.toListDTO(sourceEntities);
 
         return sourceDTOS;
+    }
+
+    @Override
+    public SourceDTO updateSource(Long id, SourceDTO sourceDTO) {
+        Optional<SourceEntity> source = sourceRepository.findById(id);
+
+        if(source.isEmpty()){
+            //TODO: CAMBIAR CUANDO TOCA MANEJOR DE EXCEPTIONES
+            throw  new RuntimeException();
+        }
+
+        SourceEntity sourceEntity = sourceMapper.toSetEntity(source.get(), sourceDTO);
+        SourceEntity sourceSave = sourceRepository.save(sourceEntity);
+        SourceDTO sourceDTO1 = sourceMapper.toDTO(sourceSave);
+
+        return sourceDTO1;
     }
 }

@@ -23,4 +23,9 @@ public class SourceController {
     public ResponseEntity<?> getSource(){
         return new ResponseEntity<>(sourceService.getSource(), HttpStatus.OK);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateSource(@PathVariable Long id, @RequestBody SourceDTO sourceDTO){
+        return new ResponseEntity<>(sourceService.updateSource(id, sourceDTO), HttpStatus.CREATED);
+    }
 }

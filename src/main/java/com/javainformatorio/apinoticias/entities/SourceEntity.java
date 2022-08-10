@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -13,6 +15,9 @@ import java.time.LocalDate;
 @Data @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "source")
+@SQLDelete(sql = "UPDATE source Set deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 public class SourceEntity {
 
     @Id
@@ -28,4 +33,7 @@ public class SourceEntity {
     @Column(name = "created_at")
     @CreationTimestamp
     private LocalDate createdAt;
+
+    @Column(name = "deleted")
+    private boolean deleted = Boolean.FALSE;
 }

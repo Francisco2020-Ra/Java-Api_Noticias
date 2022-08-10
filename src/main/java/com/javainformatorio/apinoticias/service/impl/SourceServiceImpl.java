@@ -50,4 +50,13 @@ public class SourceServiceImpl implements SourceService {
 
         return sourceDTO1;
     }
+
+    @Override
+    public void deleteSource(Long id) {
+        SourceEntity sourceEntity = sourceRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Not found id: " + id)
+        );
+
+        sourceRepository.deleteById(id);
+    }
 }

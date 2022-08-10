@@ -11,4 +11,6 @@ public interface SourceService {
     List<SourceDTO> getSource();
 
     SourceDTO updateSource(Long id, SourceDTO sourceDTO);
+
+    void deleteSource(Long id);
 }

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/author")
@@ -29,5 +31,10 @@ public class AuthorController {
     @GetMapping
     public ResponseEntity<?> getAuthor(){
         return new ResponseEntity<>(authorService.getAuthor(), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateAuthor(@PathVariable Long id, @RequestBody AuthorDTO authorDTO){
+        return new ResponseEntity<>(authorService.updateAuthor(id, authorDTO), HttpStatus.CREATED);
     }
 }

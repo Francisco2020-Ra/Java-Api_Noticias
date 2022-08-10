@@ -35,4 +35,12 @@ public class AuthorMapper {
                 .collect(toList());
     }
 
+    public AuthorEntity toSetEntity(AuthorEntity authorEntity, AuthorDTO authorDTO){
+        authorEntity.setId(authorDTO.getId());
+        authorEntity.setFirstName(authorDTO.getFirstName());
+        authorEntity.setLastName(authorDTO.getLastName());
+        authorEntity.setFullname(authorDTO.getFullname());
+
+        return authorEntity;
+    }
 }

@@ -38,4 +38,16 @@ public class AuthorServiceImpl implements AuthorService {
 
         return authorMapper.toListDTO(authorEntityList);
     }
+
+    @Override
+    public AuthorDTO updateAuthor(Long id, AuthorDTO authorDTO) {
+        AuthorEntity authorEntity = authorRepository.findById(id).orElseThrow(
+                //TODO: cambiar cuando creamos la clase excepciones
+                () -> new RuntimeException("Not found id: " + id)
+        );
+        AuthorEntity authorSet = authorMapper.toSetEntity(authorEntity, authorDTO);
+        AuthorEntity authorSave = authorRepository.save(authorSet);
+                
+        return authorMapper.toDTO(authorSave);
+    }
 }

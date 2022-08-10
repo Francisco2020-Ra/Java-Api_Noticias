@@ -9,4 +9,6 @@ public interface AuthorService {
     AuthorDTO createAuthor(AuthorDTO authorDTO);
 
     List<AuthorDTO> getAuthor();
+
+    AuthorDTO updateAuthor(Long id, AuthorDTO authorDTO);
 }

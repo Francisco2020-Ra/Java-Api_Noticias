@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 @RequestMapping("/author")
@@ -23,5 +24,10 @@ public class AuthorController {
     @PostMapping
     public ResponseEntity<?> createAuthor(@RequestBody AuthorDTO authorDTO){
         return new ResponseEntity<>(authorService.createAuthor(authorDTO), HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getAuthor(){
+        return new ResponseEntity<>(authorService.getAuthor(), HttpStatus.OK);
     }
 }

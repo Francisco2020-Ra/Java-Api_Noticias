@@ -8,6 +8,8 @@ import com.javainformatorio.apinoticias.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AuthorServiceImpl implements AuthorService {
 
@@ -25,5 +27,15 @@ public class AuthorServiceImpl implements AuthorService {
        AuthorEntity authorSave =  authorRepository.save(authorEntity);
 
         return authorMapper.toDTO(authorSave);
+    }
+
+    @Override
+    public List<AuthorDTO> getAuthor() {
+        List<AuthorEntity> authorEntityList = authorRepository.findAll();
+        if(authorEntityList.isEmpty()){
+            System.out.println("Lista vacias: codigo no_content");
+        }
+
+        return authorMapper.toListDTO(authorEntityList);
     }
 }

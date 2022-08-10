@@ -50,4 +50,12 @@ public class AuthorServiceImpl implements AuthorService {
                 
         return authorMapper.toDTO(authorSave);
     }
+
+    @Override
+    public void deleteAuthor(Long id) {
+        authorRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Not found id: " + id)
+        );
+        authorRepository.deleteById(id);
+    }
 }

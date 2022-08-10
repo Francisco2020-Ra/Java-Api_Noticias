@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
@@ -36,5 +37,10 @@ public class AuthorController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateAuthor(@PathVariable Long id, @RequestBody AuthorDTO authorDTO){
         return new ResponseEntity<>(authorService.updateAuthor(id, authorDTO), HttpStatus.CREATED);
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteAuthor(@PathVariable Long id){
+        authorService.deleteAuthor(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

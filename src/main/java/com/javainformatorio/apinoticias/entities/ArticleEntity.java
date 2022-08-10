@@ -12,6 +12,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
+import javax.persistence.CascadeType;
+import javax.persistence.JoinColumn;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -45,6 +48,10 @@ public class ArticleEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private SourceEntity source;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "author_id", referencedColumnName = "id")
+    private AuthorEntity author;
 
     @Override
     public String toString() {

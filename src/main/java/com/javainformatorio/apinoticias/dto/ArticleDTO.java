@@ -15,4 +15,7 @@ public class ArticleDTO {
     private String publishedAt;
     private String content;
 
+    private SourceDTO source;
+    private AuthorDTO author;
+
 }

@@ -12,6 +12,7 @@ public class SourceMapper {
 
     public SourceEntity toEntity(SourceDTO sourceDTO){
         return SourceEntity.builder()
+                .id(sourceDTO.getId())
                 .name(sourceDTO.getName())
                 .code(sourceDTO.getCode())
                 .build();
@@ -22,7 +23,7 @@ public class SourceMapper {
                 .id(sourceEntity.getId())
                 .name(sourceEntity.getName())
                 .code(sourceEntity.getCode())
-                .createdAt(sourceEntity.getCreatedAt().toString())
+                .createdAt(String.valueOf(sourceEntity.getCreatedAt()))
                 .build();
     }
 

@@ -10,18 +10,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Component
 public class ArticleMapper {
 
     private final SourceMapper sourceMapper;
     private final AuthorMapper authorMapper;
+
     @Autowired
-    public ArticleMapper(SourceMapper sourceMapper, AuthorMapper authorMapper){
+    public ArticleMapper(SourceMapper sourceMapper, AuthorMapper authorMapper) {
         this.sourceMapper = sourceMapper;
         this.authorMapper = authorMapper;
     }
-    public ArticleEntity toEntity(ArticleDTO articleDTO){
+
+    public ArticleEntity toEntity(ArticleDTO articleDTO) {
         return ArticleEntity.builder()
                 .title(articleDTO.getTitle())
                 .description(articleDTO.getDescription())
@@ -34,15 +39,15 @@ public class ArticleMapper {
                 .build();
     }
 
-    public SourceEntity getSourceEntity(ArticleDTO articleDTO){
+    public SourceEntity getSourceEntity(ArticleDTO articleDTO) {
         return sourceMapper.toEntity(articleDTO.getSource());
     }
 
-    public AuthorEntity getAuthorEntity(ArticleDTO articleDTO){
+    public AuthorEntity getAuthorEntity(ArticleDTO articleDTO) {
         return authorMapper.toEntity(articleDTO.getAuthor());
     }
 
-    public ArticleDTO toDTO(ArticleEntity articleEntity){
+    public ArticleDTO toDTO(ArticleEntity articleEntity) {
         return ArticleDTO.builder()
                 .id(articleEntity.getId())
                 .title(articleEntity.getTitle())
@@ -62,5 +67,11 @@ public class ArticleMapper {
 
     public AuthorDTO getAuthorDTO(ArticleEntity articleEntity){
         return authorMapper.toDTO(articleEntity.getAuthor());
+    }
+
+    public List<ArticleDTO> toListDTO(List<ArticleEntity> listArticleEntity) {
+        return listArticleEntity.stream()
+                .map(this::toDTO)
+                .collect(toList());
     }
 }

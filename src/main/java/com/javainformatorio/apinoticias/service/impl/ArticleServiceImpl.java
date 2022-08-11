@@ -10,6 +10,8 @@ import com.javainformatorio.apinoticias.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ArticleServiceImpl implements ArticleService {
 
@@ -39,5 +41,16 @@ public class ArticleServiceImpl implements ArticleService {
         ArticleEntity articleSave = articleRepository.save(articleEntity);
 
         return articleMapper.toDTO(articleSave);
+    }
+
+    @Override
+    public List<ArticleDTO> getArticle() {
+        List<ArticleEntity> listArticleEntity = articleRepository.findAll();
+        if(listArticleEntity.isEmpty()){
+            //TODO: modificar con la clase excepcion cuando corresponde
+            throw new RuntimeException("List Empty");
+        }
+
+        return articleMapper.toListDTO(listArticleEntity);
     }
 }

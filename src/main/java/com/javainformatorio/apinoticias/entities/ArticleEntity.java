@@ -4,17 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Column;
-import javax.persistence.ManyToOne;
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
-import javax.persistence.CascadeType;
-import javax.persistence.JoinColumn;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -22,6 +15,9 @@ import java.util.Objects;
 @Data @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "article")
+@SQLDelete(sql = "UPDATE article SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 public class ArticleEntity {
 
     @Id
@@ -45,6 +41,9 @@ public class ArticleEntity {
 
     @Column(name = "content")
     private String content;
+
+    @Column(name = "deleted")
+    private boolean deleted = Boolean.FALSE;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private SourceEntity source;

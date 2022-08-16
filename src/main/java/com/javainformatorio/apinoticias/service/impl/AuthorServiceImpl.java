@@ -1,14 +1,21 @@
 package com.javainformatorio.apinoticias.service.impl;
 
+import com.javainformatorio.apinoticias.controller.util.PageResponse;
 import com.javainformatorio.apinoticias.dto.AuthorDTO;
+import com.javainformatorio.apinoticias.entities.ArticleEntity;
 import com.javainformatorio.apinoticias.entities.AuthorEntity;
 import com.javainformatorio.apinoticias.mapper.AuthorMapper;
 import com.javainformatorio.apinoticias.repository.AuthorRepository;
 import com.javainformatorio.apinoticias.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
@@ -57,5 +64,21 @@ public class AuthorServiceImpl implements AuthorService {
                 () -> new RuntimeException("Not found id: " + id)
         );
         authorRepository.deleteById(id);
+    }
+
+    @Override
+    public PageResponse<AuthorDTO> findByPage(int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        Page<AuthorEntity> pageResultAuthorEntity = authorRepository.findAll(pageable);
+        String path = "/author";
+        PageResponse response = PageResponse.builder()
+                .content(pageResultAuthorEntity
+                        .getContent()
+                        .stream()
+                        .map(authorMapper::toDTO)
+                        .collect(toList()))
+                .build();
+        response.setResponse(path, page, pageResultAuthorEntity.getTotalPages(), pageResultAuthorEntity.getTotalElements(), pageResultAuthorEntity.isFirst(), pageResultAuthorEntity.isLast());
+        return response;
     }
 }

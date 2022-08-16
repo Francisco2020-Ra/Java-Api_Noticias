@@ -9,4 +9,6 @@ public interface ArticleService {
     ArticleDTO createArticle(ArticleDTO articleDTO);
 
     List<ArticleDTO> getArticle();
+
+    ArticleDTO updateArticle(Long id, ArticleDTO articleDTO);
 }

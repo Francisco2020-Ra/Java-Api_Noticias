@@ -5,14 +5,7 @@ import com.javainformatorio.apinoticias.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/author")
@@ -29,11 +22,11 @@ public class AuthorController {
         return new ResponseEntity<>(authorService.createAuthor(authorDTO), HttpStatus.CREATED);
     }
 
-    @GetMapping
+    /*@GetMapping
     public ResponseEntity<?> getAuthor(){
         return new ResponseEntity<>(authorService.getAuthor(), HttpStatus.OK);
     }
-
+*/
     @PutMapping("/{id}")
     public ResponseEntity<?> updateAuthor(@PathVariable Long id, @RequestBody AuthorDTO authorDTO){
         return new ResponseEntity<>(authorService.updateAuthor(id, authorDTO), HttpStatus.CREATED);
@@ -42,5 +35,10 @@ public class AuthorController {
     public ResponseEntity<?> deleteAuthor(@PathVariable Long id){
         authorService.deleteAuthor(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> findByPage(@RequestParam int page){
+        return new ResponseEntity<>(authorService.findByPage(page), HttpStatus.OK);
     }
 }

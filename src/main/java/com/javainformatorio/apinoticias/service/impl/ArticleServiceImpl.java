@@ -83,16 +83,25 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public PageResponse<ArticleDTO> findByPage(int page) {
         Pageable pageable = PageRequest.of(page, 5);
-        Page<ArticleEntity> pageResultSourceEntity = articleRepository.findAll(pageable);
+        Page<ArticleEntity> pageResultArticleEntity = articleRepository.findAll(pageable);
         String path = "/article";
+
         PageResponse response = PageResponse.builder()
-                .content(pageResultSourceEntity
+                .content(pageResultArticleEntity
                         .getContent()
                         .stream()
                         .map(articleMapper::toDTO)
                         .collect(toList()))
                 .build();
-        response.setResponse(path, page, pageResultSourceEntity.getTotalPages(), pageResultSourceEntity.getTotalElements(), pageResultSourceEntity.isFirst(), pageResultSourceEntity.isLast());
+
+        response.setResponse(
+                path,
+                page,
+                pageResultArticleEntity.getTotalPages(),
+                pageResultArticleEntity.getTotalElements(),
+                pageResultArticleEntity.isFirst(),
+                pageResultArticleEntity.isLast());
+
         return response;
     }
 }

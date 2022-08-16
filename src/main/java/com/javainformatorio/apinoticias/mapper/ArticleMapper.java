@@ -74,4 +74,15 @@ public class ArticleMapper {
                 .map(this::toDTO)
                 .collect(toList());
     }
+
+    public ArticleEntity setEntity(ArticleEntity articleEntity, ArticleDTO articleDTO){
+        articleEntity.setId(articleDTO.getId());
+        articleEntity.setTitle(articleDTO.getTitle());
+        articleEntity.setDescription(articleDTO.getDescription());
+        articleEntity.setUrl(articleDTO.getUrl());
+        articleEntity.setUrlToImage(articleDTO.getUrlToImage());
+        articleEntity.setPublishedAt(LocalDate.parse(articleDTO.getPublishedAt()));
+        articleEntity.setContent(articleDTO.getContent());
+        return  articleEntity;
+    }
 }

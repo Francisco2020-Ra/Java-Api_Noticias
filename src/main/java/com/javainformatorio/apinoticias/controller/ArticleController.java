@@ -5,11 +5,7 @@ import com.javainformatorio.apinoticias.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/article")
@@ -30,5 +26,10 @@ public class ArticleController {
     @GetMapping
     public ResponseEntity<?> getArticle(){
         return new ResponseEntity<>(articleService.getArticle(), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateArticle(@PathVariable Long id, @RequestBody ArticleDTO articleDTO){
+        return new ResponseEntity<>(articleService.updateArticle(id, articleDTO), HttpStatus.CREATED);
     }
 }

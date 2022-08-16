@@ -53,4 +53,15 @@ public class ArticleServiceImpl implements ArticleService {
 
         return articleMapper.toListDTO(listArticleEntity);
     }
+
+    @Override
+    public ArticleDTO updateArticle(Long id, ArticleDTO articleDTO) {
+        ArticleEntity articleEntity = articleRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Not found source id : " + id)
+        );
+
+        ArticleEntity entity = articleMapper.setEntity(articleEntity, articleDTO);
+        ArticleEntity articleSave = articleRepository.save(entity);
+        return articleMapper.toDTO(articleSave);
+    }
 }

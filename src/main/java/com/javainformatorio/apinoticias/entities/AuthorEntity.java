@@ -55,7 +55,6 @@ public class AuthorEntity {
                 ", lastName='" + lastName + '\'' +
                 ", fullname='" + fullname + '\'' +
                 ", createdAt=" + createdAt +
-                ", deleted=" + deleted +
                 '}';
     }
 

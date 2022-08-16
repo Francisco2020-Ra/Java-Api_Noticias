@@ -23,11 +23,11 @@ public class ArticleController {
         return new ResponseEntity<>(articleService.createArticle(articleDTO), HttpStatus.CREATED);
     }
 
-    @GetMapping
+    /*@GetMapping
     public ResponseEntity<?> getArticle(){
         return new ResponseEntity<>(articleService.getArticle(), HttpStatus.OK);
     }
-
+*/
     @PutMapping("/{id}")
     public ResponseEntity<?> updateArticle(@PathVariable Long id, @RequestBody ArticleDTO articleDTO){
         return new ResponseEntity<>(articleService.updateArticle(id, articleDTO), HttpStatus.CREATED);
@@ -37,5 +37,10 @@ public class ArticleController {
     public ResponseEntity<?> deleteArticle(@PathVariable Long id){
         articleService.deleteArticle(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> findByPage(@RequestParam int page){
+        return new ResponseEntity<>(articleService.findByPage(page), HttpStatus.OK);
     }
 }

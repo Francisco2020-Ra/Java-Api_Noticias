@@ -1,5 +1,6 @@
 package com.javainformatorio.apinoticias.service.impl;
 
+import com.javainformatorio.apinoticias.controller.util.PageResponse;
 import com.javainformatorio.apinoticias.dto.ArticleDTO;
 import com.javainformatorio.apinoticias.entities.ArticleEntity;
 import com.javainformatorio.apinoticias.mapper.ArticleMapper;
@@ -8,9 +9,14 @@ import com.javainformatorio.apinoticias.repository.AuthorRepository;
 import com.javainformatorio.apinoticias.repository.SourceRepository;
 import com.javainformatorio.apinoticias.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
@@ -72,5 +78,21 @@ public class ArticleServiceImpl implements ArticleService {
         );
 
         articleRepository.deleteById(id);
+    }
+
+    @Override
+    public PageResponse<ArticleDTO> findByPage(int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        Page<ArticleEntity> pageResultSourceEntity = articleRepository.findAll(pageable);
+        String path = "/article";
+        PageResponse response = PageResponse.builder()
+                .content(pageResultSourceEntity
+                        .getContent()
+                        .stream()
+                        .map(articleMapper::toDTO)
+                        .collect(toList()))
+                .build();
+        response.setResponse(path, page, pageResultSourceEntity.getTotalPages(), pageResultSourceEntity.getTotalElements(), pageResultSourceEntity.isFirst(), pageResultSourceEntity.isLast());
+        return response;
     }
 }

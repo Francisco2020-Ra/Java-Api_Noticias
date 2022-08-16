@@ -64,4 +64,13 @@ public class ArticleServiceImpl implements ArticleService {
         ArticleEntity articleSave = articleRepository.save(entity);
         return articleMapper.toDTO(articleSave);
     }
+
+    @Override
+    public void deleteArticle(Long id) {
+        articleRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Not found source id : " + id)
+        );
+
+        articleRepository.deleteById(id);
+    }
 }

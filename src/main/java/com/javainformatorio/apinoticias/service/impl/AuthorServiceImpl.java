@@ -2,7 +2,6 @@ package com.javainformatorio.apinoticias.service.impl;
 
 import com.javainformatorio.apinoticias.controller.util.PageResponse;
 import com.javainformatorio.apinoticias.dto.AuthorDTO;
-import com.javainformatorio.apinoticias.entities.ArticleEntity;
 import com.javainformatorio.apinoticias.entities.AuthorEntity;
 import com.javainformatorio.apinoticias.mapper.AuthorMapper;
 import com.javainformatorio.apinoticias.repository.AuthorRepository;
@@ -13,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -70,15 +70,45 @@ public class AuthorServiceImpl implements AuthorService {
     public PageResponse<AuthorDTO> findByPage(int page) {
         Pageable pageable = PageRequest.of(page, 5);
         Page<AuthorEntity> pageResultAuthorEntity = authorRepository.findAll(pageable);
-        String path = "/author";
+        if(page >= pageResultAuthorEntity.getTotalPages()){
+            throw new IllegalArgumentException("Incorrect index");
+        }
+
+        String nextPage = pageResultAuthorEntity.isLast() ? "" : "/author?page=" + (page + 1);
+        String previousPage = pageResultAuthorEntity.isFirst() ? "" : "/author?page=" + (page - 1);
+
+        return pageAuthor(pageResultAuthorEntity, page, nextPage, previousPage);
+    }
+
+    @Override
+    public PageResponse<AuthorDTO> findByCreatedAtIsAfter(String date, int page) {
+       Pageable pageable = PageRequest.of(page, 5);
+       Page<AuthorEntity> pageResultAuthorEntity = authorRepository.findAllByCreatedAtIsAfter(LocalDate.parse(date), pageable);
+
+       if(page >= pageResultAuthorEntity.getTotalPages()){
+           throw new IllegalArgumentException("Incorrect index");
+       }
+
+       String nextPage = pageResultAuthorEntity.isLast() ? "" : "/author/date?page=" + (page + 1) + "&date=" + date;
+       String previousPage = pageResultAuthorEntity.isFirst() ? "" : "/author/date?page=" + (page - 1) + "&date=" + date;
+
+        return pageAuthor(pageResultAuthorEntity, page, nextPage, previousPage );
+    }
+
+    public PageResponse<AuthorDTO> pageAuthor(Page<AuthorEntity> pageResultAuthorEntity, int page, String nextPage, String previousPage){
+
         PageResponse response = PageResponse.builder()
                 .content(pageResultAuthorEntity
                         .getContent()
                         .stream()
                         .map(authorMapper::toDTO)
                         .collect(toList()))
+                .pageNumber(page +1)
+                .totalPage(pageResultAuthorEntity.getTotalPages())
+                .totalElements(pageResultAuthorEntity.getTotalElements())
+                .nextPage(nextPage)
+                .previousPage(previousPage)
                 .build();
-        response.setResponse(path, page, pageResultAuthorEntity.getTotalPages(), pageResultAuthorEntity.getTotalElements(), pageResultAuthorEntity.isFirst(), pageResultAuthorEntity.isLast());
         return response;
     }
 }

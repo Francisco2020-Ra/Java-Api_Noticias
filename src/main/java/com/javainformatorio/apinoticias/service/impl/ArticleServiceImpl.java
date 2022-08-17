@@ -2,7 +2,9 @@ package com.javainformatorio.apinoticias.service.impl;
 
 import com.javainformatorio.apinoticias.controller.util.PageResponse;
 import com.javainformatorio.apinoticias.dto.ArticleDTO;
+import com.javainformatorio.apinoticias.dto.AuthorDTO;
 import com.javainformatorio.apinoticias.entities.ArticleEntity;
+import com.javainformatorio.apinoticias.entities.AuthorEntity;
 import com.javainformatorio.apinoticias.mapper.ArticleMapper;
 import com.javainformatorio.apinoticias.repository.ArticleRepository;
 import com.javainformatorio.apinoticias.repository.AuthorRepository;
@@ -84,7 +86,17 @@ public class ArticleServiceImpl implements ArticleService {
     public PageResponse<ArticleDTO> findByPage(int page) {
         Pageable pageable = PageRequest.of(page, 5);
         Page<ArticleEntity> pageResultArticleEntity = articleRepository.findAll(pageable);
-        String path = "/article";
+        if(page >= pageResultArticleEntity.getTotalPages()){
+            throw new IllegalArgumentException("Incorrect index");
+        }
+
+        String nextPage = pageResultArticleEntity.isLast() ? "" : "/article?page=" + (page + 1);
+        String previousPage = pageResultArticleEntity.isFirst() ? "" : "/article?page=" + (page - 1);
+
+        return pageArticle(pageResultArticleEntity, page, nextPage, previousPage );
+    }
+
+    public PageResponse<ArticleDTO> pageArticle(Page<ArticleEntity> pageResultArticleEntity, int page, String nextPage, String previousPage){
 
         PageResponse response = PageResponse.builder()
                 .content(pageResultArticleEntity
@@ -92,16 +104,12 @@ public class ArticleServiceImpl implements ArticleService {
                         .stream()
                         .map(articleMapper::toDTO)
                         .collect(toList()))
+                .pageNumber(page +1)
+                .totalPage(pageResultArticleEntity.getTotalPages())
+                .totalElements(pageResultArticleEntity.getTotalElements())
+                .nextPage(nextPage)
+                .previousPage(previousPage)
                 .build();
-
-        response.setResponse(
-                path,
-                page,
-                pageResultArticleEntity.getTotalPages(),
-                pageResultArticleEntity.getTotalElements(),
-                pageResultArticleEntity.isFirst(),
-                pageResultArticleEntity.isLast());
-
         return response;
     }
 }

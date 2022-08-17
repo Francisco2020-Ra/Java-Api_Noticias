@@ -41,4 +41,9 @@ public class AuthorController {
     public ResponseEntity<?> findByPage(@RequestParam int page){
         return new ResponseEntity<>(authorService.findByPage(page), HttpStatus.OK);
     }
+
+    @GetMapping("/date")
+    public ResponseEntity<?> findByCreationDateIsAfter(@RequestParam String date, @RequestParam int page){
+        return new ResponseEntity<>(authorService.findByCreatedAtIsAfter(date, page), HttpStatus.OK);
+    }
 }

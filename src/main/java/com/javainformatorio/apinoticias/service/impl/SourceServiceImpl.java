@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -74,15 +73,33 @@ public class SourceServiceImpl implements SourceService {
     public PageResponse<SourceDTO> findByPage(int page) {
         Pageable pageable = PageRequest.of(page, 5);
         Page<SourceEntity> pageResultSourceEntity = sourceRepository.findAll(pageable);
-        String path = "/source";
+
+        if(page >= pageResultSourceEntity.getTotalPages()){
+            throw new IllegalArgumentException("Incorrect index");
+        }
+
+        String nextPage = pageResultSourceEntity.isLast() ? "" : "/source?page=" + (page + 1);
+        String previousPage = pageResultSourceEntity.isFirst() ? "" : "/source?page=" + (page - 1);
+
+        return pageSource(pageResultSourceEntity, page, nextPage, previousPage );
+
+
+    }
+
+    public PageResponse<SourceDTO> pageSource(Page<SourceEntity> pageResultSourceEntity, int page, String nextPage, String previousPage){
+
         PageResponse response = PageResponse.builder()
                 .content(pageResultSourceEntity
                         .getContent()
                         .stream()
-                        .map(sourceEntity -> sourceMapper.toDTO(sourceEntity))
+                        .map(sourceMapper::toDTO)
                         .collect(toList()))
+                .pageNumber(page +1)
+                .totalPage(pageResultSourceEntity.getTotalPages())
+                .totalElements(pageResultSourceEntity.getTotalElements())
+                .nextPage(nextPage)
+                .previousPage(previousPage)
                 .build();
-        response.setResponse(path, page, pageResultSourceEntity.getTotalPages(), pageResultSourceEntity.getTotalElements(), pageResultSourceEntity.isFirst(), pageResultSourceEntity.isLast());
         return response;
     }
 }

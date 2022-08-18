@@ -12,4 +12,6 @@ import java.time.LocalDate;
 public interface AuthorRepository extends JpaRepository<AuthorEntity, Long> {
 
     Page<AuthorEntity> findAllByCreatedAtIsAfter(LocalDate date, Pageable pageable);
+
+    Page<AuthorEntity> findByFullnameContaining(String word, Pageable page);
 }

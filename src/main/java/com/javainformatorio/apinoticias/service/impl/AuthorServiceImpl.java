@@ -95,6 +95,21 @@ public class AuthorServiceImpl implements AuthorService {
         return pageAuthor(pageResultAuthorEntity, page, nextPage, previousPage );
     }
 
+    @Override
+    public PageResponse<AuthorDTO> findByFullnameContaining(String word, int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        Page<AuthorEntity> pageResultAuthorEntity = authorRepository.findByFullnameContaining(word, pageable);
+
+        if(page >= pageResultAuthorEntity.getTotalPages()){
+            throw  new IllegalArgumentException("Incorrect index");
+        }
+
+        String nextPage = pageResultAuthorEntity.isLast() ? "" : "/author/word?page=" + (page + 1) + "&word=" + word;
+        String previousPage = pageResultAuthorEntity.isFirst() ? "" : "/author/word?page=" + (page - 1) + "&word=" + word;
+
+        return pageAuthor(pageResultAuthorEntity, page, nextPage, previousPage );
+    }
+
     public PageResponse<AuthorDTO> pageAuthor(Page<AuthorEntity> pageResultAuthorEntity, int page, String nextPage, String previousPage){
 
         PageResponse response = PageResponse.builder()

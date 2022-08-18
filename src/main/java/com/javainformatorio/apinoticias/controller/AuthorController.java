@@ -46,4 +46,9 @@ public class AuthorController {
     public ResponseEntity<?> findByCreationDateIsAfter(@RequestParam String date, @RequestParam int page){
         return new ResponseEntity<>(authorService.findByCreatedAtIsAfter(date, page), HttpStatus.OK);
     }
+
+    @GetMapping("/word")
+    public ResponseEntity<?> findByFullnameContaining(@RequestParam String word, @RequestParam int page){
+        return new ResponseEntity<>(authorService.findByFullnameContaining(word, page), HttpStatus.OK);
+    }
 }

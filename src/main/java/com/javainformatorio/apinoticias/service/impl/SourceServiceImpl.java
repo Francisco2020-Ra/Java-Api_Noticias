@@ -86,6 +86,21 @@ public class SourceServiceImpl implements SourceService {
 
     }
 
+    @Override
+    public PageResponse<SourceDTO> findByNameContaining(String word, int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        Page<SourceEntity> pageResultSourceEntity = sourceRepository.findByNameContaining(word, pageable);
+
+        if(page >= pageResultSourceEntity.getTotalPages()){
+            throw  new IllegalArgumentException("Incorrect index");
+        }
+
+        String nextPage = pageResultSourceEntity.isLast() ? "" : "/source/word?page=" + (page + 1) + "&word=" + word;
+        String previousPage = pageResultSourceEntity.isFirst() ? "" : "/source/word?page=" + (page - 1) + "&word=" + word;
+
+        return pageSource(pageResultSourceEntity, page, nextPage, previousPage );
+    }
+
     public PageResponse<SourceDTO> pageSource(Page<SourceEntity> pageResultSourceEntity, int page, String nextPage, String previousPage){
 
         PageResponse response = PageResponse.builder()

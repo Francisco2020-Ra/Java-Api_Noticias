@@ -40,4 +40,9 @@ public class SourceController {
     public ResponseEntity<?> findByPage(@RequestParam int page){
         return new ResponseEntity<>(sourceService.findByPage(page), HttpStatus.OK);
     }
+
+    @GetMapping("/word")
+    public ResponseEntity<?> findByNameContaining(@RequestParam String word, @RequestParam int page){
+        return new ResponseEntity<>(sourceService.findByNameContaining(word, page), HttpStatus.OK);
+    }
 }

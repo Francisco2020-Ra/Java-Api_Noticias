@@ -16,4 +16,6 @@ public interface SourceService {
     void deleteSource(Long id);
 
     PageResponse<SourceDTO> findByPage(int page);
+
+    PageResponse<SourceDTO> findByNameContaining(String word, int page);
 }

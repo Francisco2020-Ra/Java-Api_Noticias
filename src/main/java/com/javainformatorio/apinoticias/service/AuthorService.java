@@ -19,4 +19,6 @@ public interface AuthorService {
 
     PageResponse<AuthorDTO> findByCreatedAtIsAfter(String date, int page);
 
+    PageResponse<AuthorDTO> findByFullnameContaining(String word, int page);
+
 }

@@ -5,10 +5,13 @@ import com.javainformatorio.apinoticias.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Size;
 @RestController
 @RequestMapping("/article")
+@Validated
 public class ArticleController {
 
     private ArticleService articleService;
@@ -42,5 +45,13 @@ public class ArticleController {
     @GetMapping
     public ResponseEntity<?> findByPage(@RequestParam int page){
         return new ResponseEntity<>(articleService.findByPage(page), HttpStatus.OK);
+    }
+
+    @GetMapping("/word")
+    public ResponseEntity<?> findByTitleContainingAndDescriptionContainingAndAuthorByContentContainingAndFullnameContaining(
+            @RequestParam @Size(min = 4, max = 255) String word, @RequestParam int page){
+        return new ResponseEntity<>(
+                articleService.findByTitleContainingAndDescriptionContainingAndAuthorByContentContainingAndFullnameContaining(word, page)
+                , HttpStatus.OK);
     }
 }

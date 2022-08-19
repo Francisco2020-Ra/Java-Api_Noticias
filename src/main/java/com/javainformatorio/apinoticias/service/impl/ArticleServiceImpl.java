@@ -2,9 +2,8 @@ package com.javainformatorio.apinoticias.service.impl;
 
 import com.javainformatorio.apinoticias.controller.util.PageResponse;
 import com.javainformatorio.apinoticias.dto.ArticleDTO;
-import com.javainformatorio.apinoticias.dto.AuthorDTO;
 import com.javainformatorio.apinoticias.entities.ArticleEntity;
-import com.javainformatorio.apinoticias.entities.AuthorEntity;
+import com.javainformatorio.apinoticias.exception.ResourceNotFoundException;
 import com.javainformatorio.apinoticias.mapper.ArticleMapper;
 import com.javainformatorio.apinoticias.repository.ArticleRepository;
 import com.javainformatorio.apinoticias.repository.AuthorRepository;
@@ -15,8 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
@@ -40,9 +37,9 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ArticleDTO createArticle(ArticleDTO articleDTO) {
+    public ArticleDTO createArticle(ArticleDTO articleDTO) throws ResourceNotFoundException {
         sourceRepository.findById(articleDTO.getSource().getId()).orElseThrow(
-                () -> new RuntimeException("Not found source id : " + articleDTO.getSource().getId())
+                () -> new ResourceNotFoundException("Not found source id: " + articleDTO.getSource().getId())
         );
 
         ArticleEntity articleEntity = articleMapper.toEntity(articleDTO);
@@ -52,20 +49,9 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleDTO> getArticle() {
-        List<ArticleEntity> listArticleEntity = articleRepository.findAll();
-        if(listArticleEntity.isEmpty()){
-            //TODO: modificar con la clase excepcion cuando corresponde
-            throw new RuntimeException("List Empty");
-        }
-
-        return articleMapper.toListDTO(listArticleEntity);
-    }
-
-    @Override
-    public ArticleDTO updateArticle(Long id, ArticleDTO articleDTO) {
+    public ArticleDTO updateArticle(Long id, ArticleDTO articleDTO) throws ResourceNotFoundException {
         ArticleEntity articleEntity = articleRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Not found source id : " + id)
+                () -> new ResourceNotFoundException("Not found source id: " + id)
         );
 
         ArticleEntity entity = articleMapper.setEntity(articleEntity, articleDTO);
@@ -74,9 +60,9 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void deleteArticle(Long id) {
+    public void deleteArticle(Long id) throws ResourceNotFoundException {
         articleRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Not found source id : " + id)
+                () -> new ResourceNotFoundException("Not found source id: " + id)
         );
 
         articleRepository.deleteById(id);

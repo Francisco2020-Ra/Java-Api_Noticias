@@ -1,6 +1,7 @@
 package com.javainformatorio.apinoticias.controller;
 
 import com.javainformatorio.apinoticias.dto.ArticleDTO;
+import com.javainformatorio.apinoticias.exception.ResourceNotFoundException;
 import com.javainformatorio.apinoticias.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,22 +23,17 @@ public class ArticleController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createArticle(@RequestBody ArticleDTO articleDTO) {
+    public ResponseEntity<?> createArticle(@RequestBody ArticleDTO articleDTO) throws ResourceNotFoundException {
         return new ResponseEntity<>(articleService.createArticle(articleDTO), HttpStatus.CREATED);
     }
 
-    /*@GetMapping
-    public ResponseEntity<?> getArticle(){
-        return new ResponseEntity<>(articleService.getArticle(), HttpStatus.OK);
-    }
-*/
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateArticle(@PathVariable Long id, @RequestBody ArticleDTO articleDTO){
+    public ResponseEntity<?> updateArticle(@PathVariable Long id, @RequestBody ArticleDTO articleDTO) throws ResourceNotFoundException {
         return new ResponseEntity<>(articleService.updateArticle(id, articleDTO), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteArticle(@PathVariable Long id){
+    public ResponseEntity<?> deleteArticle(@PathVariable Long id) throws ResourceNotFoundException {
         articleService.deleteArticle(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

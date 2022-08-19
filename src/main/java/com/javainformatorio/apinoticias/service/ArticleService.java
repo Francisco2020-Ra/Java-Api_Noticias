@@ -2,18 +2,15 @@ package com.javainformatorio.apinoticias.service;
 
 import com.javainformatorio.apinoticias.controller.util.PageResponse;
 import com.javainformatorio.apinoticias.dto.ArticleDTO;
-
-import java.util.List;
+import com.javainformatorio.apinoticias.exception.ResourceNotFoundException;
 
 public interface ArticleService {
 
-    ArticleDTO createArticle(ArticleDTO articleDTO);
+    ArticleDTO createArticle(ArticleDTO articleDTO) throws ResourceNotFoundException;
 
-    List<ArticleDTO> getArticle();
+    ArticleDTO updateArticle(Long id, ArticleDTO articleDTO) throws ResourceNotFoundException;
 
-    ArticleDTO updateArticle(Long id, ArticleDTO articleDTO);
-
-    void deleteArticle(Long id);
+    void deleteArticle(Long id) throws ResourceNotFoundException;
 
     PageResponse<ArticleDTO> findByPage(int page);
 

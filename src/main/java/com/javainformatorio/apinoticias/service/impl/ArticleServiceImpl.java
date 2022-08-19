@@ -86,17 +86,33 @@ public class ArticleServiceImpl implements ArticleService {
     public PageResponse<ArticleDTO> findByPage(int page) {
         Pageable pageable = PageRequest.of(page, 5);
         Page<ArticleEntity> pageResultArticleEntity = articleRepository.findAll(pageable);
-        if(page >= pageResultArticleEntity.getTotalPages()){
+        if (page >= pageResultArticleEntity.getTotalPages()) {
             throw new IllegalArgumentException("Incorrect index");
         }
 
         String nextPage = pageResultArticleEntity.isLast() ? "" : "/article?page=" + (page + 1);
         String previousPage = pageResultArticleEntity.isFirst() ? "" : "/article?page=" + (page - 1);
 
-        return pageArticle(pageResultArticleEntity, page, nextPage, previousPage );
+        return pageArticle(pageResultArticleEntity, page, nextPage, previousPage);
     }
 
-    public PageResponse<ArticleDTO> pageArticle(Page<ArticleEntity> pageResultArticleEntity, int page, String nextPage, String previousPage){
+    @Override
+    public PageResponse<ArticleDTO> findByTitleContainingAndDescriptionContainingAndAuthorByContentContainingAndFullnameContaining(String word, int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        Page<ArticleEntity> pageResultArticleEntity =
+                articleRepository.findByTitleContainingOrDescriptionContainingOrContentContainingOrAuthorFullnameContaining(word, word, word, word, pageable);
+
+        if (page >= pageResultArticleEntity.getTotalPages()) {
+            throw new IllegalArgumentException("Incorrect index");
+        }
+
+        String nextPage = pageResultArticleEntity.isLast() ? "" : "/article/word?page=" + (page + 1) + "&word=" + word;
+        String previousPage = pageResultArticleEntity.isFirst() ? "" : "/article/word?page=" + (page - 1) + "&word=" + word;
+
+        return pageArticle(pageResultArticleEntity, page, nextPage, previousPage);
+    }
+
+    public PageResponse<ArticleDTO> pageArticle(Page<ArticleEntity> pageResultArticleEntity, int page, String nextPage, String previousPage) {
 
         PageResponse response = PageResponse.builder()
                 .content(pageResultArticleEntity
@@ -104,7 +120,7 @@ public class ArticleServiceImpl implements ArticleService {
                         .stream()
                         .map(articleMapper::toDTO)
                         .collect(toList()))
-                .pageNumber(page +1)
+                .pageNumber(page + 1)
                 .totalPage(pageResultArticleEntity.getTotalPages())
                 .totalElements(pageResultArticleEntity.getTotalElements())
                 .nextPage(nextPage)

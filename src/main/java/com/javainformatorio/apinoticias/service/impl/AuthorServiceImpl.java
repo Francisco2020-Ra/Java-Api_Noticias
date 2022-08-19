@@ -3,6 +3,7 @@ package com.javainformatorio.apinoticias.service.impl;
 import com.javainformatorio.apinoticias.controller.util.PageResponse;
 import com.javainformatorio.apinoticias.dto.AuthorDTO;
 import com.javainformatorio.apinoticias.entities.AuthorEntity;
+import com.javainformatorio.apinoticias.exception.ResourceNotFoundException;
 import com.javainformatorio.apinoticias.mapper.AuthorMapper;
 import com.javainformatorio.apinoticias.repository.AuthorRepository;
 import com.javainformatorio.apinoticias.service.AuthorService;
@@ -12,8 +13,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+
 import java.time.LocalDate;
-import java.util.List;
+
 
 import static java.util.stream.Collectors.toList;
 
@@ -37,20 +39,9 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<AuthorDTO> getAuthor() {
-        List<AuthorEntity> authorEntityList = authorRepository.findAll();
-        if(authorEntityList.isEmpty()){
-            System.out.println("Lista vacias: codigo no_content");
-        }
-
-        return authorMapper.toListDTO(authorEntityList);
-    }
-
-    @Override
-    public AuthorDTO updateAuthor(Long id, AuthorDTO authorDTO) {
+    public AuthorDTO updateAuthor(Long id, AuthorDTO authorDTO) throws ResourceNotFoundException {
         AuthorEntity authorEntity = authorRepository.findById(id).orElseThrow(
-                //TODO: cambiar cuando creamos la clase excepciones
-                () -> new RuntimeException("Not found id: " + id)
+                () -> new ResourceNotFoundException("Not found id: " + id)
         );
         AuthorEntity authorSet = authorMapper.toSetEntity(authorEntity, authorDTO);
         AuthorEntity authorSave = authorRepository.save(authorSet);
@@ -59,9 +50,9 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void deleteAuthor(Long id) {
+    public void deleteAuthor(Long id) throws ResourceNotFoundException {
         authorRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Not found id: " + id)
+                () -> new ResourceNotFoundException("Not found id: " + id)
         );
         authorRepository.deleteById(id);
     }

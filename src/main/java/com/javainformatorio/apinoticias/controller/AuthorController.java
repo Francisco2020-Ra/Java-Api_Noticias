@@ -1,11 +1,14 @@
 package com.javainformatorio.apinoticias.controller;
 
 import com.javainformatorio.apinoticias.dto.AuthorDTO;
+import com.javainformatorio.apinoticias.exception.ResourceNotFoundException;
 import com.javainformatorio.apinoticias.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/author")
@@ -18,21 +21,16 @@ public class AuthorController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createAuthor(@RequestBody AuthorDTO authorDTO){
+    public ResponseEntity<?> createAuthor(@Valid @RequestBody AuthorDTO authorDTO){
         return new ResponseEntity<>(authorService.createAuthor(authorDTO), HttpStatus.CREATED);
     }
 
-    /*@GetMapping
-    public ResponseEntity<?> getAuthor(){
-        return new ResponseEntity<>(authorService.getAuthor(), HttpStatus.OK);
-    }
-*/
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateAuthor(@PathVariable Long id, @RequestBody AuthorDTO authorDTO){
+    public ResponseEntity<?> updateAuthor(@PathVariable Long id, @Valid @RequestBody AuthorDTO authorDTO) throws ResourceNotFoundException {
         return new ResponseEntity<>(authorService.updateAuthor(id, authorDTO), HttpStatus.CREATED);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteAuthor(@PathVariable Long id){
+    public ResponseEntity<?> deleteAuthor(@PathVariable Long id) throws ResourceNotFoundException {
         authorService.deleteAuthor(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

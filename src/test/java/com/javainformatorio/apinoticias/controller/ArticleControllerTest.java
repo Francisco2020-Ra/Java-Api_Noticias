@@ -51,7 +51,7 @@ class ArticleControllerTest {
 
     /*---------------------------------Create Article Test ------------------------------*/
     @Test
-    void when_receiveMovieDTOWhitCategoryNonExistent_then_returnNotFound() throws Exception {
+    void when_receiveArticleDTOWhitSourceNonExistent_then_returnNotFound() throws Exception {
         when(sourceRepository.findById(1L)).thenReturn(Optional.empty());
 
         mockMvc.perform(post("/article").contentType(MediaType.APPLICATION_JSON)
@@ -73,7 +73,7 @@ class ArticleControllerTest {
 
     /*---------------------------------Update Movie Test ------------------------------*/
     @Test
-    void when_receiveAArticleNonExistent_then_returnNotFound() throws Exception {
+    void when_receiveAIdArticleNonExistent_then_returnNotFound() throws Exception {
         when(articleRepository.findById(1L)).thenReturn(Optional.empty());
 
         mockMvc.perform(put("/article/1").contentType(MediaType.APPLICATION_JSON)
@@ -98,7 +98,7 @@ class ArticleControllerTest {
                 .andExpect(status().isCreated());
     }
 
-    /*---------------------------------Delete Movie Test ------------------------------*/
+    /*---------------------------------Delete Article Test ------------------------------*/
     @Test
     void when_callDeleteMethodUnregisteredId_then_returnNotFound() throws Exception {
         when(articleRepository.findById(1L)).thenReturn(Optional.empty());
@@ -143,10 +143,6 @@ class ArticleControllerTest {
                 .andExpect(status().isOk());
     }
 
-
-    @Test
-    void findByTitleContainingAndDescriptionContainingAndAuthorByContentContainingAndFullnameContaining() {
-    }
 
 
     public ArticleEntity articleEntity(Long id, String title, SourceEntity source, AuthorEntity author) {

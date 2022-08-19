@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 @ControllerAdvice
@@ -44,6 +45,20 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
 
         return handleExceptionInternal(ex, apiError, new HttpHeaders(), apiError.getStatus(), request);
+    }
+
+    @ExceptionHandler(value = { IllegalArgumentException.class })
+    protected ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request) {
+        Date date = new Date();
+        Timestamp timestamp = new Timestamp(date.getTime());
+        ApiErrorDTO errorDTO = ApiErrorDTO.builder()
+                .timestamp(timestamp)
+                .status(HttpStatus.BAD_REQUEST)
+                .message(ex.getMessage())
+                .build();
+
+        return handleExceptionInternal(ex, errorDTO,
+                new HttpHeaders(), errorDTO.getStatus(), request);
     }
 
     @ExceptionHandler(value = {ResourceNotFoundException.class})

@@ -3,6 +3,8 @@ package com.javainformatorio.apinoticias.dto;
 import lombok.Builder;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Data
@@ -10,7 +12,11 @@ import java.time.LocalDate;
 public class SourceDTO {
 
     private Long id;
+
+    @NotNull
     private String name;
+    @NotNull
     private String code;
+
     private String createdAt;
 }

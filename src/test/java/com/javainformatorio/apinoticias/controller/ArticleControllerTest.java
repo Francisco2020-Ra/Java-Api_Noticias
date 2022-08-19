@@ -45,7 +45,6 @@ class ArticleControllerTest {
     private ObjectMapper objectMapper;
     @MockBean
     private ArticleRepository articleRepository;
-
     @MockBean
     private SourceRepository sourceRepository;
 
@@ -71,7 +70,7 @@ class ArticleControllerTest {
                 .andExpect(jsonPath("$.title", is("El Pato")));
     }
 
-    /*---------------------------------Update Movie Test ------------------------------*/
+    /*---------------------------------Update Article Test ------------------------------*/
     @Test
     void when_receiveAIdArticleNonExistent_then_returnNotFound() throws Exception {
         when(articleRepository.findById(1L)).thenReturn(Optional.empty());

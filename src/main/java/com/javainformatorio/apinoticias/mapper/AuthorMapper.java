@@ -15,8 +15,12 @@ public class AuthorMapper {
         return AuthorEntity.builder()
                 .firstName(authorDTO.getFirstName())
                 .lastName(authorDTO.getLastName())
-                .fullname(authorDTO.getFullname())
+                .fullname(concatFistNameAndLastname(authorDTO))
                 .build();
+    }
+
+    public String concatFistNameAndLastname(AuthorDTO authorDTO){
+        return authorDTO.getFirstName().concat(" ").concat(authorDTO.getLastName());
     }
 
     public AuthorDTO toDTO(AuthorEntity authorEntity) {

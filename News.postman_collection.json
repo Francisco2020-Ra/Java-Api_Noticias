@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\":\"Francisco\",\n    \"code\":\"FR\"\n}",
+							"raw": "{\n    \"name\":\"La Mañana\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -176,7 +176,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"firstName\":\"Rocky\",\n    \"lastName\":\"Balboa\",\n    \"fullname\" : \"Rocky Balboa\"\n}",
+							"raw": "{\n    \"firstName\":\"Rocky\",\n    \"lastName\":\"Balboa\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

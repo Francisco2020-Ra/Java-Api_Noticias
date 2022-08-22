@@ -17,7 +17,7 @@ public class AuthorDTO {
     private String firstName;
     @NotBlank
     private String lastName;
-    @NotBlank
+
     private String fullname;
 
     private String createdAt;

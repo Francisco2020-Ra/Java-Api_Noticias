@@ -15,7 +15,7 @@ public class SourceDTO {
 
     @NotNull
     private String name;
-    @NotNull
+
     private String code;
 
     private String createdAt;
